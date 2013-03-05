@@ -11,7 +11,11 @@ include_recipe "logstash::default"
 include_recipe "python::pip"
 include_recipe "git"
 
-package "python-dev"
+if platform_family? "debian"
+  package "python-dev"
+elsif platform_family? "rhel","fedora"
+  package "python-devel"
+end
 
 git "#{node['logstash']['basedir']}/shipper" do
   repository "git://github.com/lusis/logstash-shipper.git"
